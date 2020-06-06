@@ -1,7 +1,7 @@
-import React from "react";
-import AuthNav from "./App/Navigator/AuthNav";
+import React from 'react'
+import AuthNav from './App/Navigator/AuthNav'
 
 export default () => {
   // Wrap here with an HOC
-  return <AuthNav />;
-};
+  return <AuthNav />
+}
