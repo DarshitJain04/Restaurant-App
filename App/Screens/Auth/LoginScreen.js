@@ -8,6 +8,7 @@ import {
   View,
   SafeAreaView,
   Alert,
+  Platform,
 } from 'react-native'
 import AuthScreenBox from '../../Components/AuthScreenBox'
 import {
@@ -19,7 +20,11 @@ import { useFormik } from 'formik'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { theme } from '../../Theme/theme'
 import * as Yup from 'yup'
-import { signInWithEmailPassword } from '../../Utils/EmailAuth'
+import {
+  signInWithEmailPassword,
+  signInWithFaceBook,
+} from '../../Utils/EmailAuth'
+import * as Facebook from 'expo-facebook'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
@@ -64,6 +69,28 @@ const LoginScreen = ({ navigation }) => {
       })
     },
   })
+  const facebook = async () => {
+    try {
+      await Facebook.initializeAsync('260179991894606', 'Resturant App')
+      const Response = await Facebook.logInWithReadPermissionsAsync()
+      if (Response.type === 'success') {
+        // Login with Facebook
+        const Res = signInWithFaceBook(Response.token)
+        Res.then((t) => {
+          if (t === 'OK') {
+            //Signin IN
+            console.log('Signed In')
+            navigation.navigate('Loading')
+          } else {
+            //Error
+            Alert.alert(t.message)
+          }
+        })
+      }
+    } catch (error) {
+      Alert.alert(error.message)
+    }
+  }
   return (
     <SafeAreaView>
       <StatusBar barStyle="dark-content" />
@@ -118,6 +145,13 @@ const LoginScreen = ({ navigation }) => {
           }}
         >
           <Button
+            onPress={() => {
+              {
+                Platform.OS === 'android'
+                  ? facebook()
+                  : Alert.alert('Currently Not Supported for iOS')
+              }
+            }}
             type="solid"
             raised={true}
             buttonStyle={{
