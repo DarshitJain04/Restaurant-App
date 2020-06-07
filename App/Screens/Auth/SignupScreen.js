@@ -8,6 +8,7 @@ import {
   View,
   SafeAreaView,
   Alert,
+  ScrollView,
 } from 'react-native'
 import AuthScreenBox from '../../Components/AuthScreenBox'
 import {
@@ -67,91 +68,95 @@ const SignupScreen = ({ navigation }) => {
   })
   return (
     <SafeAreaView>
-      <StatusBar barStyle="dark-content" />
-      <ImageBackground
-        source={require('../../Assets/Images/Background.png')}
-        style={styles.ImageBackgroundStyles}
-      >
-        <AuthScreenBox title="Sign Up">
-          <Image source={require('../../Assets/Images/Plate.png')} />
-          <Text style={styles.heading}>Welcome</Text>
-          <Text style={styles.subheading}>We love to see you again.</Text>
-          <View style={{ padding: 20 }}>
-            <Input
-              onBlur={formik.handleBlur('email')}
-              errorMessage={formik.touched.email && formik.errors.email}
-              value={formik.values.email}
-              onChangeText={formik.handleChange('email')}
-              placeholder="email@address.com"
-              leftIcon={<Icon name="email" size={20} color="black" />}
-            />
-            <Input
-              onBlur={formik.handleBlur('password')}
-              errorMessage={formik.touched.password && formik.errors.password}
-              value={formik.values.password}
-              onChangeText={formik.handleChange('password')}
-              secureTextEntry={true}
-              placeholder="Password"
-              leftIcon={<Icon name="lock" size={20} color="black" />}
-            />
-          </View>
-          <View>
+      <ScrollView>
+        <StatusBar barStyle="dark-content" />
+        <ImageBackground
+          source={require('../../Assets/Images/Background.png')}
+          style={styles.ImageBackgroundStyles}
+        >
+          <AuthScreenBox title="Sign Up">
+            <Image source={require('../../Assets/Images/Plate.png')} />
+            <Text style={styles.heading}>Welcome</Text>
+            <Text style={styles.subheading}>We love to see you again.</Text>
+            <View style={{ padding: 20 }}>
+              <Input
+                onBlur={formik.handleBlur('email')}
+                errorMessage={formik.touched.email && formik.errors.email}
+                value={formik.values.email}
+                onChangeText={formik.handleChange('email')}
+                placeholder="email@address.com"
+                leftIcon={<Icon name="email" size={20} color="black" />}
+                autoCapitalize="none"
+              />
+              <Input
+                onBlur={formik.handleBlur('password')}
+                errorMessage={formik.touched.password && formik.errors.password}
+                value={formik.values.password}
+                onChangeText={formik.handleChange('password')}
+                secureTextEntry={true}
+                placeholder="Password"
+                leftIcon={<Icon name="lock" size={20} color="black" />}
+                autoCapitalize="none"
+              />
+            </View>
+            <View>
+              <Button
+                onPress={formik.handleSubmit}
+                buttonStyle={{
+                  height: hp('6%'),
+                  width: wp('20%'),
+                  backgroundColor: theme.colors.purple,
+                }}
+                containerStyle={{
+                  alignSelf: 'center',
+                  marginTop: -20,
+                }}
+                icon={<Icon name="arrow-right" size={20} color="white" />}
+              />
+            </View>
+          </AuthScreenBox>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              alignItems: 'center',
+            }}
+          >
             <Button
-              onPress={formik.handleSubmit}
+              onPress={() => {
+                navigation.navigate('Login')
+              }}
+              type="solid"
+              raised={true}
               buttonStyle={{
-                height: hp('6%'),
-                width: wp('20%'),
-                backgroundColor: theme.colors.purple,
+                backgroundColor: '#6644CC',
+                height: hp('7%'),
               }}
               containerStyle={{
-                alignSelf: 'center',
-                marginTop: -20,
+                borderRadius: 12,
+                marginBottom: 50,
+                width: wp('40%'),
               }}
-              icon={<Icon name="arrow-right" size={15} color="white" />}
+              title="Sign In"
+            />
+            <Button
+              type="solid"
+              raised={true}
+              titleStyle={{ color: '#00BA40' }}
+              buttonStyle={{
+                backgroundColor: '#FFFFFF',
+                height: hp('7%'),
+              }}
+              containerStyle={{
+                borderRadius: 12,
+                marginBottom: 50,
+                width: wp('40%'),
+              }}
+              title="Sign Up"
             />
           </View>
-        </AuthScreenBox>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            alignItems: 'center',
-          }}
-        >
-          <Button
-            onPress={() => {
-              navigation.navigate('Login')
-            }}
-            type="solid"
-            raised={true}
-            buttonStyle={{
-              backgroundColor: '#6644CC',
-              height: hp('7%'),
-            }}
-            containerStyle={{
-              borderRadius: 12,
-              marginBottom: 50,
-              width: wp('40%'),
-            }}
-            title="Sign In"
-          />
-          <Button
-            type="solid"
-            raised={true}
-            titleStyle={{ color: '#00BA40' }}
-            buttonStyle={{
-              backgroundColor: '#FFFFFF',
-              height: hp('7%'),
-            }}
-            containerStyle={{
-              borderRadius: 12,
-              marginBottom: 50,
-              width: wp('40%'),
-            }}
-            title="Sign Up"
-          />
-        </View>
-      </ImageBackground>
+        </ImageBackground>
+      </ScrollView>
     </SafeAreaView>
   )
 }
