@@ -25,10 +25,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: hp('4.3%'),
     marginTop: -25,
+    fontFamily: 'Montserrat-Bold',
   },
   subheading: {
     textAlign: 'center',
     fontSize: hp('1.6%'),
+    fontFamily: 'Montserrat-Bold',
   },
 })
 
