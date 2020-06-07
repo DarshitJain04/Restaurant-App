@@ -1,21 +1,27 @@
 import React from 'react'
 import {
-  Text,
   ImageBackground,
   Dimensions,
   StatusBar,
   Image,
   StyleSheet,
   View,
+  SafeAreaView,
 } from 'react-native'
 import AuthScreenBox from '../../Components/AuthScreenBox'
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen'
-import { Button } from 'react-native-elements'
+import { Button, Input, Text } from 'react-native-elements'
+import { useFormik } from 'formik'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { theme } from '../../Theme/theme'
+import * as Yup from 'yup'
+
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
+
 const styles = StyleSheet.create({
   ImageBackgroundStyles: {
     width: width,
@@ -23,20 +29,32 @@ const styles = StyleSheet.create({
   },
   heading: {
     textAlign: 'center',
-    fontSize: hp('4.3%'),
+    fontSize: hp('5.7%'),
     marginTop: -25,
-    fontFamily: 'Montserrat-Bold',
+    color: theme.colors.purple,
   },
   subheading: {
     textAlign: 'center',
-    fontSize: hp('1.6%'),
-    fontFamily: 'Montserrat-Bold',
+    fontSize: hp('1.4%'),
+    color: theme.colors.green,
   },
 })
 
 const LoginScreen = ({ navigation }) => {
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email('Invalid email address').required('Required'),
+    }),
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2))
+    },
+  })
   return (
-    <>
+    <SafeAreaView>
       <StatusBar barStyle="dark-content" />
       <ImageBackground
         source={require('../../Assets/Images/Background.png')}
@@ -46,7 +64,40 @@ const LoginScreen = ({ navigation }) => {
           <Image source={require('../../Assets/Images/Plate.png')} />
           <Text style={styles.heading}>Welcome</Text>
           <Text style={styles.subheading}>We love to see you again.</Text>
-          <Text style={styles.subheading}>Form</Text>
+          <View style={{ padding: 20 }}>
+            <Input
+              onBlur={formik.handleBlur('email')}
+              errorMessage={formik.touched.email && formik.errors.email}
+              value={formik.values.email}
+              onChangeText={formik.handleChange('email')}
+              placeholder="email@address.com"
+              leftIcon={<Icon name="email" size={20} color="black" />}
+            />
+            <Input
+              onBlur={formik.handleBlur('password')}
+              errorMessage={formik.errors.password && formik.touched.password}
+              value={formik.values.password}
+              onChangeText={formik.handleChange('password')}
+              secureTextEntry={true}
+              placeholder="Password"
+              leftIcon={<Icon name="lock" size={20} color="black" />}
+            />
+          </View>
+          <View>
+            <Button
+              onPress={formik.handleSubmit}
+              buttonStyle={{
+                height: hp('6%'),
+                width: wp('20%'),
+                backgroundColor: theme.colors.purple,
+              }}
+              containerStyle={{
+                alignSelf: 'center',
+                marginTop: -20,
+              }}
+              icon={<Icon name="arrow-right" size={15} color="white" />}
+            />
+          </View>
         </AuthScreenBox>
         <View
           style={{
@@ -89,7 +140,7 @@ const LoginScreen = ({ navigation }) => {
           />
         </View>
       </ImageBackground>
-    </>
+    </SafeAreaView>
   )
 }
 export default LoginScreen

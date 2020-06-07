@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import AuthNav from './App/Navigator/AuthNav'
 import * as Font from 'expo-font'
 import { AppLoading } from 'expo'
+import { ThemeProvider } from 'react-native-elements'
+import { theme } from './App/Theme/theme'
 
 const loadFont = () => {
   return Font.loadAsync({
@@ -31,6 +33,10 @@ export default () => {
       />
     )
   } else {
-    return <AuthNav />
+    return (
+      <ThemeProvider theme={theme}>
+        <AuthNav />
+      </ThemeProvider>
+    )
   }
 }
