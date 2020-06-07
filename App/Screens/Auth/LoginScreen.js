@@ -25,6 +25,7 @@ import {
   signInWithFaceBook,
 } from '../../Utils/EmailAuth'
 import * as Facebook from 'expo-facebook'
+import { SocialIcon } from 'react-native-elements'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
@@ -36,13 +37,13 @@ const styles = StyleSheet.create({
   },
   heading: {
     textAlign: 'center',
-    fontSize: hp('5.7%'),
+    fontSize: hp('4.5%'),
     marginTop: -25,
     color: theme.colors.purple,
   },
   subheading: {
     textAlign: 'center',
-    fontSize: hp('1.4%'),
+    fontSize: hp('1.6%'),
     color: theme.colors.green,
   },
 })
@@ -142,9 +143,10 @@ const LoginScreen = ({ navigation }) => {
             flexDirection: 'row',
             justifyContent: 'space-around',
             alignItems: 'center',
+            paddingBottom: 50,
           }}
         >
-          <Button
+          <SocialIcon
             onPress={() => {
               {
                 Platform.OS === 'android'
@@ -152,19 +154,9 @@ const LoginScreen = ({ navigation }) => {
                   : Alert.alert('Currently Not Supported for iOS')
               }
             }}
-            type="solid"
-            raised={true}
-            buttonStyle={{
-              backgroundColor: '#6644CC',
-              height: hp('7%'),
-            }}
-            containerStyle={{
-              borderRadius: 12,
-              marginBottom: 50,
-              width: wp('40%'),
-            }}
-            title="Sign In"
+            type="facebook"
           />
+          <Text style={{ color: '#FFFFFF', fontSize: hp('3%') }}>OR</Text>
           <Button
             onPress={() => {
               navigation.navigate('Signup')
@@ -178,7 +170,6 @@ const LoginScreen = ({ navigation }) => {
             }}
             containerStyle={{
               borderRadius: 12,
-              marginBottom: 50,
               width: wp('40%'),
             }}
             title="Sign Up"
