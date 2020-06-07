@@ -1,22 +1,29 @@
-import React, { useContext, useEffect } from 'react'
+import React from 'react'
 import {
-  Text,
   ImageBackground,
   Dimensions,
   StatusBar,
   Image,
   StyleSheet,
   View,
+  SafeAreaView,
+  Alert,
 } from 'react-native'
 import AuthScreenBox from '../../Components/AuthScreenBox'
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen'
-import { Button } from 'react-native-elements'
+import { Button, Input, Text } from 'react-native-elements'
+import { useFormik } from 'formik'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { theme } from '../../Theme/theme'
+import * as Yup from 'yup'
+import { signUpWithEmailPassword } from '../../Utils/EmailAuth'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
+
 const styles = StyleSheet.create({
   ImageBackgroundStyles: {
     width: width,
@@ -24,20 +31,42 @@ const styles = StyleSheet.create({
   },
   heading: {
     textAlign: 'center',
-    fontSize: hp('4.3%'),
+    fontSize: hp('5.7%'),
     marginTop: -25,
-    fontFamily: 'Montserrat-Bold',
+    color: theme.colors.purple,
   },
   subheading: {
     textAlign: 'center',
-    fontSize: hp('1.6%'),
-    fontFamily: 'Montserrat-Bold',
+    fontSize: hp('1.4%'),
+    color: theme.colors.green,
   },
 })
 
 const SignupScreen = ({ navigation }) => {
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email('Invalid email address').required('Required'),
+      password: Yup.string().min(6).required(),
+    }),
+    onSubmit: (values) => {
+      const res = signUpWithEmailPassword(values.email, values.password)
+      res.then((t) => {
+        if (t === 'OK') {
+          //Signed IN
+          navigation.navigate('Loading')
+        } else {
+          //Error
+          Alert.alert(t.message)
+        }
+      })
+    },
+  })
   return (
-    <>
+    <SafeAreaView>
       <StatusBar barStyle="dark-content" />
       <ImageBackground
         source={require('../../Assets/Images/Background.png')}
@@ -47,7 +76,40 @@ const SignupScreen = ({ navigation }) => {
           <Image source={require('../../Assets/Images/Plate.png')} />
           <Text style={styles.heading}>Welcome</Text>
           <Text style={styles.subheading}>We love to see you again.</Text>
-          <Text style={styles.subheading}>Form</Text>
+          <View style={{ padding: 20 }}>
+            <Input
+              onBlur={formik.handleBlur('email')}
+              errorMessage={formik.touched.email && formik.errors.email}
+              value={formik.values.email}
+              onChangeText={formik.handleChange('email')}
+              placeholder="email@address.com"
+              leftIcon={<Icon name="email" size={20} color="black" />}
+            />
+            <Input
+              onBlur={formik.handleBlur('password')}
+              errorMessage={formik.touched.password && formik.errors.password}
+              value={formik.values.password}
+              onChangeText={formik.handleChange('password')}
+              secureTextEntry={true}
+              placeholder="Password"
+              leftIcon={<Icon name="lock" size={20} color="black" />}
+            />
+          </View>
+          <View>
+            <Button
+              onPress={formik.handleSubmit}
+              buttonStyle={{
+                height: hp('6%'),
+                width: wp('20%'),
+                backgroundColor: theme.colors.purple,
+              }}
+              containerStyle={{
+                alignSelf: 'center',
+                marginTop: -20,
+              }}
+              icon={<Icon name="arrow-right" size={15} color="white" />}
+            />
+          </View>
         </AuthScreenBox>
         <View
           style={{
@@ -57,14 +119,13 @@ const SignupScreen = ({ navigation }) => {
           }}
         >
           <Button
-            type="solid"
             onPress={() => {
               navigation.navigate('Login')
             }}
-            titleStyle={{ color: '#6644CC' }}
+            type="solid"
             raised={true}
             buttonStyle={{
-              backgroundColor: '#FFFFFF',
+              backgroundColor: '#6644CC',
               height: hp('7%'),
             }}
             containerStyle={{
@@ -77,8 +138,9 @@ const SignupScreen = ({ navigation }) => {
           <Button
             type="solid"
             raised={true}
+            titleStyle={{ color: '#00BA40' }}
             buttonStyle={{
-              backgroundColor: '#00BA40',
+              backgroundColor: '#FFFFFF',
               height: hp('7%'),
             }}
             containerStyle={{
@@ -90,7 +152,7 @@ const SignupScreen = ({ navigation }) => {
           />
         </View>
       </ImageBackground>
-    </>
+    </SafeAreaView>
   )
 }
 export default SignupScreen

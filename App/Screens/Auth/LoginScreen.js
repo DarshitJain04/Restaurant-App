@@ -7,6 +7,7 @@ import {
   StyleSheet,
   View,
   SafeAreaView,
+  Alert,
 } from 'react-native'
 import AuthScreenBox from '../../Components/AuthScreenBox'
 import {
@@ -18,6 +19,7 @@ import { useFormik } from 'formik'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { theme } from '../../Theme/theme'
 import * as Yup from 'yup'
+import { signInWithEmailPassword } from '../../Utils/EmailAuth'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
@@ -48,9 +50,18 @@ const LoginScreen = ({ navigation }) => {
     },
     validationSchema: Yup.object({
       email: Yup.string().email('Invalid email address').required('Required'),
+      password: Yup.string().min(6).required(),
     }),
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2))
+      signInWithEmailPassword(values.email, values.password).then((res) => {
+        if (res === 'OK') {
+          // Logged In
+          navigation.navigate('Loading')
+        } else {
+          // Error
+          Alert.alert(res.message)
+        }
+      })
     },
   })
   return (
@@ -75,7 +86,7 @@ const LoginScreen = ({ navigation }) => {
             />
             <Input
               onBlur={formik.handleBlur('password')}
-              errorMessage={formik.errors.password && formik.touched.password}
+              errorMessage={formik.touched.password && formik.errors.password}
               value={formik.values.password}
               onChangeText={formik.handleChange('password')}
               secureTextEntry={true}
