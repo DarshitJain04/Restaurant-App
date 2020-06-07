@@ -8,6 +8,7 @@ import {
   View,
   SafeAreaView,
   Alert,
+  Platform,
 } from 'react-native'
 import AuthScreenBox from '../../Components/AuthScreenBox'
 import {
@@ -20,6 +21,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { theme } from '../../Theme/theme'
 import * as Yup from 'yup'
 import { signUpWithEmailPassword } from '../../Utils/EmailAuth'
+import { SocialIcon } from 'react-native-elements'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
@@ -31,14 +33,14 @@ const styles = StyleSheet.create({
   },
   heading: {
     textAlign: 'center',
-    fontSize: hp('5.7%'),
+    fontSize: hp('4.5%'),
     marginTop: -25,
-    color: theme.colors.purple,
+    color: theme.colors.green,
   },
   subheading: {
     textAlign: 'center',
-    fontSize: hp('1.4%'),
-    color: theme.colors.green,
+    fontSize: hp('1.6%'),
+    color: theme.colors.purple,
   },
 })
 
@@ -74,8 +76,8 @@ const SignupScreen = ({ navigation }) => {
       >
         <AuthScreenBox title="Sign Up">
           <Image source={require('../../Assets/Images/Plate.png')} />
-          <Text style={styles.heading}>Welcome</Text>
-          <Text style={styles.subheading}>We love to see you again.</Text>
+          <Text style={styles.heading}>Join Us Today !</Text>
+          <Text style={styles.subheading}>We would love you to join us</Text>
           <View style={{ padding: 20 }}>
             <Input
               onBlur={formik.handleBlur('email')}
@@ -116,6 +118,7 @@ const SignupScreen = ({ navigation }) => {
             flexDirection: 'row',
             justifyContent: 'space-around',
             alignItems: 'center',
+            marginBottom: 50,
           }}
         >
           <Button
@@ -130,25 +133,20 @@ const SignupScreen = ({ navigation }) => {
             }}
             containerStyle={{
               borderRadius: 12,
-              marginBottom: 50,
               width: wp('40%'),
             }}
             title="Sign In"
           />
-          <Button
-            type="solid"
-            raised={true}
-            titleStyle={{ color: '#00BA40' }}
-            buttonStyle={{
-              backgroundColor: '#FFFFFF',
-              height: hp('7%'),
+          <Text style={{ color: '#FFFFFF', fontSize: hp('3%') }}>OR</Text>
+          <SocialIcon
+            onPress={() => {
+              {
+                Platform.OS === 'android'
+                  ? facebook()
+                  : Alert.alert('Currently Not Supported for iOS')
+              }
             }}
-            containerStyle={{
-              borderRadius: 12,
-              marginBottom: 50,
-              width: wp('40%'),
-            }}
-            title="Sign Up"
+            type="facebook"
           />
         </View>
       </ImageBackground>

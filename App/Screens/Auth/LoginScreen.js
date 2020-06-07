@@ -8,6 +8,7 @@ import {
   View,
   SafeAreaView,
   Alert,
+  Platform,
 } from 'react-native'
 import AuthScreenBox from '../../Components/AuthScreenBox'
 import {
@@ -19,7 +20,12 @@ import { useFormik } from 'formik'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { theme } from '../../Theme/theme'
 import * as Yup from 'yup'
-import { signInWithEmailPassword } from '../../Utils/EmailAuth'
+import {
+  signInWithEmailPassword,
+  signInWithFaceBook,
+} from '../../Utils/EmailAuth'
+import * as Facebook from 'expo-facebook'
+import { SocialIcon } from 'react-native-elements'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
@@ -31,13 +37,13 @@ const styles = StyleSheet.create({
   },
   heading: {
     textAlign: 'center',
-    fontSize: hp('5.7%'),
+    fontSize: hp('4.5%'),
     marginTop: -25,
     color: theme.colors.purple,
   },
   subheading: {
     textAlign: 'center',
-    fontSize: hp('1.4%'),
+    fontSize: hp('1.6%'),
     color: theme.colors.green,
   },
 })
@@ -64,6 +70,28 @@ const LoginScreen = ({ navigation }) => {
       })
     },
   })
+  const facebook = async () => {
+    try {
+      await Facebook.initializeAsync('260179991894606', 'Resturant App')
+      const Response = await Facebook.logInWithReadPermissionsAsync()
+      if (Response.type === 'success') {
+        // Login with Facebook
+        const Res = signInWithFaceBook(Response.token)
+        Res.then((t) => {
+          if (t === 'OK') {
+            //Signin IN
+            console.log('Signed In')
+            navigation.navigate('Loading')
+          } else {
+            //Error
+            Alert.alert(t.message)
+          }
+        })
+      }
+    } catch (error) {
+      Alert.alert(error.message)
+    }
+  }
   return (
     <SafeAreaView>
       <StatusBar barStyle="dark-content" />
@@ -115,22 +143,20 @@ const LoginScreen = ({ navigation }) => {
             flexDirection: 'row',
             justifyContent: 'space-around',
             alignItems: 'center',
+            paddingBottom: 50,
           }}
         >
-          <Button
-            type="solid"
-            raised={true}
-            buttonStyle={{
-              backgroundColor: '#6644CC',
-              height: hp('7%'),
+          <SocialIcon
+            onPress={() => {
+              {
+                Platform.OS === 'android'
+                  ? facebook()
+                  : Alert.alert('Currently Not Supported for iOS')
+              }
             }}
-            containerStyle={{
-              borderRadius: 12,
-              marginBottom: 50,
-              width: wp('40%'),
-            }}
-            title="Sign In"
+            type="facebook"
           />
+          <Text style={{ color: '#FFFFFF', fontSize: hp('3%') }}>OR</Text>
           <Button
             onPress={() => {
               navigation.navigate('Signup')
@@ -144,7 +170,6 @@ const LoginScreen = ({ navigation }) => {
             }}
             containerStyle={{
               borderRadius: 12,
-              marginBottom: 50,
               width: wp('40%'),
             }}
             title="Sign Up"
