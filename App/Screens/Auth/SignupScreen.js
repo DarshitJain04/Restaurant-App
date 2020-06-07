@@ -14,7 +14,6 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen'
 import { Button } from 'react-native-elements'
-// import { Context as FontContext } from '../../Context/FontContext'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height

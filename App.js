@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import AuthNav from './App/Navigator/AuthNav'
 import * as Font from 'expo-font'
 import { AppLoading } from 'expo'
-// import { Provider as FontProvider } from './App/Context/FontContext'
 
 const loadFont = () => {
   return Font.loadAsync({
@@ -26,9 +25,9 @@ export default () => {
   if (!fontLoaded) {
     return (
       <AppLoading
-        startAsync={loadFont} 
-        onError={() => console.log("ERROR OCCURED")} 
-        onFinish={() => setFontLoaded(true)} 
+        startAsync={loadFont}
+        onError={() => console.log('ERROR OCCURED')}
+        onFinish={() => setFontLoaded(true)}
       />
     )
   } else {
