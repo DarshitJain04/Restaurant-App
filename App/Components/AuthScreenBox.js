@@ -27,7 +27,7 @@ const AuthScreenBox = ({ children, title }) => {
 
 const ReusableStyles = {
   backgroundColor: 'white',
-  height: hp('62%'),
+  height: hp('69%'),
   width: wp('87%'),
   borderRadius: 15,
   alignSelf: 'center',
@@ -35,7 +35,7 @@ const ReusableStyles = {
 
 const styles = StyleSheet.create({
   heading: {
-    fontSize: hp('3.0%'),
+    fontSize: hp('5%'),
     color: 'white',
     fontFamily: 'Montserrat-Bold',
   },

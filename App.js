@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import AuthNav from './App/Navigator/AuthNav'
 import * as Font from 'expo-font'
 import { AppLoading } from 'expo'
+import { ThemeProvider } from 'react-native-elements'
+import { theme } from './App/Theme/theme'
 // import { Provider as FontProvider } from './App/Context/FontContext'
 
 const loadFont = () => {
@@ -16,12 +18,16 @@ export default () => {
   if (!fontLoaded) {
     return (
       <AppLoading
-        startAsync={loadFont} 
-        onError={() => console.log("ERROR OCCURED")} 
-        onFinish={() => setFontLoaded(true)} 
+        startAsync={loadFont}
+        onError={() => console.log('ERROR OCCURED')}
+        onFinish={() => setFontLoaded(true)}
       />
     )
   } else {
-    return <AuthNav />
+    return (
+      <ThemeProvider theme={theme}>
+        <AuthNav />
+      </ThemeProvider>
+    )
   }
 }
