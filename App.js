@@ -4,11 +4,20 @@ import * as Font from 'expo-font'
 import { AppLoading } from 'expo'
 import { ThemeProvider } from 'react-native-elements'
 import { theme } from './App/Theme/theme'
-// import { Provider as FontProvider } from './App/Context/FontContext'
 
 const loadFont = () => {
   return Font.loadAsync({
     'Montserrat-Bold': require('./assets/fonts/Montserrat-Bold.ttf'),
+    'Montserrat-Black': require('./assets/fonts/Montserrat-Black.ttf'),
+    'Montserrat-BoldItalic': require('./assets/fonts/Montserrat-BoldItalic.ttf'),
+    'Montserrat-ExtraBold': require('./assets/fonts/Montserrat-ExtraBold.ttf'),
+    'Montserrat-ExtraLight': require('./assets/fonts/Montserrat-ExtraLight.ttf'),
+    'Montserrat-Italic': require('./assets/fonts/Montserrat-Italic.ttf'),
+    'Montserrat-Light': require('./assets/fonts/Montserrat-Light.ttf'),
+    'Montserrat-Medium': require('./assets/fonts/Montserrat-Medium.ttf'),
+    'Montserrat-Regular': require('./assets/fonts/Montserrat-Regular.ttf'),
+    'Montserrat-SemiBold': require('./assets/fonts/Montserrat-SemiBold.ttf'),
+    'Montserrat-Thin': require('./assets/fonts/Montserrat-Thin.ttf'),
   })
 }
 
