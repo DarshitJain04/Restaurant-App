@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: hp('3.0%'),
     color: 'white',
+    fontFamily: 'Montserrat-Bold',
   },
   container: {
     flex: 1,
