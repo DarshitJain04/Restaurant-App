@@ -1,5 +1,11 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native'
 import PropTypes from 'prop-types'
 import {
   widthPercentageToDP as wp,
@@ -8,10 +14,14 @@ import {
 
 const AuthScreenBox = ({ children, title }) => {
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS == 'ios' ? 'padding' : 'padding'}
+      keyboardVerticalOffset={hp('5%')}
+    >
       <Text style={styles.heading}>{title}</Text>
       <View style={styles.FirstBoxStyles}>{children}</View>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 
