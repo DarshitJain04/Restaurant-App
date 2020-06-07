@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import {
   Text,
   ImageBackground,
@@ -14,6 +14,8 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen'
 import { Button } from 'react-native-elements'
+// import { Context as FontContext } from '../../Context/FontContext'
+
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 const styles = StyleSheet.create({
@@ -25,10 +27,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: hp('4.3%'),
     marginTop: -25,
+    fontFamily: 'Montserrat-Bold',
   },
   subheading: {
     textAlign: 'center',
     fontSize: hp('1.6%'),
+    fontFamily: 'Montserrat-Bold',
   },
 })
 
