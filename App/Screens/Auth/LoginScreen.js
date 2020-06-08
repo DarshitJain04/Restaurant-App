@@ -8,7 +8,7 @@ import {
   View,
   SafeAreaView,
   Alert,
-  ScrollView,
+  Platform,
 } from 'react-native'
 import AuthScreenBox from '../../Components/AuthScreenBox'
 import {
@@ -20,7 +20,12 @@ import { useFormik } from 'formik'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { theme } from '../../Theme/theme'
 import * as Yup from 'yup'
-import { signInWithEmailPassword } from '../../Utils/EmailAuth'
+import {
+  signInWithEmailPassword,
+  signInWithFaceBook,
+} from '../../Utils/EmailAuth'
+import * as Facebook from 'expo-facebook'
+import { SocialIcon } from 'react-native-elements'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
@@ -32,13 +37,13 @@ const styles = StyleSheet.create({
   },
   heading: {
     textAlign: 'center',
-    fontSize: hp('5.7%'),
+    fontSize: hp('4.5%'),
     marginTop: -25,
     color: theme.colors.purple,
   },
   subheading: {
     textAlign: 'center',
-    fontSize: hp('1.4%'),
+    fontSize: hp('1.6%'),
     color: theme.colors.green,
   },
 })
@@ -65,97 +70,112 @@ const LoginScreen = ({ navigation }) => {
       })
     },
   })
+  const facebook = async () => {
+    try {
+      await Facebook.initializeAsync('260179991894606', 'Resturant App')
+      const Response = await Facebook.logInWithReadPermissionsAsync()
+      if (Response.type === 'success') {
+        // Login with Facebook
+        const Res = signInWithFaceBook(Response.token)
+        Res.then((t) => {
+          if (t === 'OK') {
+            //Signin IN
+            console.log('Signed In')
+            navigation.navigate('Loading')
+          } else {
+            //Error
+            Alert.alert(t.message)
+          }
+        })
+      }
+    } catch (error) {
+      Alert.alert(error.message)
+    }
+  }
   return (
     <SafeAreaView>
-      <ScrollView>
-        <StatusBar barStyle="dark-content" />
-        <ImageBackground
-          source={require('../../Assets/Images/Background.png')}
-          style={styles.ImageBackgroundStyles}
-        >
-          <AuthScreenBox title="Sign In">
-            <Image source={require('../../Assets/Images/Plate.png')} />
-            <Text style={styles.heading}>Welcome</Text>
-            <Text style={styles.subheading}>We love to see you again.</Text>
-            <View style={{ padding: 20 }}>
-              <Input
-                onBlur={formik.handleBlur('email')}
-                errorMessage={formik.touched.email && formik.errors.email}
-                value={formik.values.email}
-                onChangeText={formik.handleChange('email')}
-                placeholder="email@address.com"
-                leftIcon={<Icon name="email" size={20} color="black" />}
-                autoCapitalize="none"
-              />
-              <Input
-                onBlur={formik.handleBlur('password')}
-                errorMessage={formik.touched.password && formik.errors.password}
-                value={formik.values.password}
-                onChangeText={formik.handleChange('password')}
-                secureTextEntry={true}
-                placeholder="Password"
-                leftIcon={<Icon name="lock" size={20} color="black" />}
-                autoCapitalize="none"
-              />
-            </View>
-            <View>
-              <Button
-                onPress={formik.handleSubmit}
-                buttonStyle={{
-                  height: hp('6%'),
-                  width: wp('20%'),
-                  backgroundColor: theme.colors.purple,
-                }}
-                containerStyle={{
-                  alignSelf: 'center',
-                  marginTop: -20,
-                }}
-                icon={<Icon name="arrow-right" size={20} color="white" />}
-              />
-            </View>
-          </AuthScreenBox>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              alignItems: 'center',
-            }}
-          >
-            <Button
-              type="solid"
-              raised={true}
-              buttonStyle={{
-                backgroundColor: '#6644CC',
-                height: hp('7%'),
-              }}
-              containerStyle={{
-                borderRadius: 12,
-                marginBottom: 50,
-                width: wp('40%'),
-              }}
-              title="Sign In"
+      <StatusBar barStyle="dark-content" />
+      <ImageBackground
+        source={require('../../Assets/Images/Background.png')}
+        style={styles.ImageBackgroundStyles}
+      >
+        <AuthScreenBox title="Sign In">
+          <Image source={require('../../Assets/Images/Plate.png')} />
+          <Text style={styles.heading}>Welcome</Text>
+          <Text style={styles.subheading}>We love to see you again.</Text>
+          <View style={{ padding: 20 }}>
+            <Input
+              onBlur={formik.handleBlur('email')}
+              errorMessage={formik.touched.email && formik.errors.email}
+              value={formik.values.email}
+              onChangeText={formik.handleChange('email')}
+              placeholder="email@address.com"
+              leftIcon={<Icon name="email" size={20} color="black" />}
             />
-            <Button
-              onPress={() => {
-                navigation.navigate('Signup')
-              }}
-              type="solid"
-              raised={true}
-              titleStyle={{ color: '#00BA40' }}
-              buttonStyle={{
-                backgroundColor: '#FFFFFF',
-                height: hp('7%'),
-              }}
-              containerStyle={{
-                borderRadius: 12,
-                marginBottom: 50,
-                width: wp('40%'),
-              }}
-              title="Sign Up"
+            <Input
+              onBlur={formik.handleBlur('password')}
+              errorMessage={formik.touched.password && formik.errors.password}
+              value={formik.values.password}
+              onChangeText={formik.handleChange('password')}
+              secureTextEntry={true}
+              placeholder="Password"
+              leftIcon={<Icon name="lock" size={20} color="black" />}
             />
           </View>
-        </ImageBackground>
-      </ScrollView>
+          <View>
+            <Button
+              onPress={formik.handleSubmit}
+              buttonStyle={{
+                height: hp('6%'),
+                width: wp('20%'),
+                backgroundColor: theme.colors.purple,
+              }}
+              containerStyle={{
+                alignSelf: 'center',
+                marginTop: -20,
+              }}
+              icon={<Icon name="arrow-right" size={15} color="white" />}
+            />
+          </View>
+        </AuthScreenBox>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            paddingBottom: 50,
+          }}
+        >
+          <SocialIcon
+            onPress={() => {
+              {
+                Platform.OS === 'android'
+                  ? facebook()
+                  : Alert.alert('Currently Not Supported for iOS')
+              }
+            }}
+            type="facebook"
+          />
+          <Text style={{ color: '#FFFFFF', fontSize: hp('3%') }}>OR</Text>
+          <Button
+            onPress={() => {
+              navigation.navigate('Signup')
+            }}
+            type="solid"
+            raised={true}
+            titleStyle={{ color: '#00BA40' }}
+            buttonStyle={{
+              backgroundColor: '#FFFFFF',
+              height: hp('7%'),
+            }}
+            containerStyle={{
+              borderRadius: 12,
+              width: wp('40%'),
+            }}
+            title="Sign Up"
+          />
+        </View>
+      </ImageBackground>
     </SafeAreaView>
   )
 }
