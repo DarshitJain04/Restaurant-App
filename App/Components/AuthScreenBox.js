@@ -65,8 +65,8 @@ const styles = StyleSheet.create({
     ...ReusableStyles,
     position: 'absolute',
     zIndex: 1,
-    opacity: 0.6,
-    top: hp('20%'),
+    opacity: 0.5,
+    top: hp('20.4%'),
     transform: [{ scale: 0.8 }],
   },
 })

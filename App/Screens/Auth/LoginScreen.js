@@ -80,7 +80,6 @@ const LoginScreen = ({ navigation }) => {
         Res.then((t) => {
           if (t === 'OK') {
             //Signin IN
-            console.log('Signed In')
             navigation.navigate('Loading')
           } else {
             //Error
