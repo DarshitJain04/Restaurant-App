@@ -21,6 +21,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { theme } from '../../Theme/theme'
 import * as Yup from 'yup'
 import { signUpWithEmailPassword } from '../../Utils/EmailAuth'
+import { signInWithFaceBook } from '../../Utils/FaceBookAuth'
 import { SocialIcon } from 'react-native-elements'
 
 const width = Dimensions.get('window').width
@@ -67,6 +68,28 @@ const SignupScreen = ({ navigation }) => {
       })
     },
   })
+  const facebook = async () => {
+    try {
+      await Facebook.initializeAsync('260179991894606', 'Resturant App')
+      const Response = await Facebook.logInWithReadPermissionsAsync()
+      if (Response.type === 'success') {
+        // Login with Facebook
+        const Res = signInWithFaceBook(Response.token)
+        Res.then((t) => {
+          if (t === 'OK') {
+            //Signin IN
+            navigation.navigate('Loading')
+          } else {
+            //Error
+            Alert.alert(t.message)
+          }
+        })
+      }
+    } catch (error) {
+      Alert.alert(error.message)
+    }
+  }
+
   return (
     <SafeAreaView>
       <StatusBar barStyle="dark-content" />

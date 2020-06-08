@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native'
 import { Button, Avatar } from 'react-native-elements'
 import * as firebase from 'firebase'
 import 'firebase/auth'
+import { newUserUtils } from '../Utils/NewUserUtils'
 
 const HomeScreen = ({ navigation }) => {
   const userData = navigation.getParam('user')
@@ -10,13 +11,17 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text>HomeScreen</Text>
-      <Avatar
-        size="medium"
-        rounded
-        source={{
-          uri: userData.photoURL,
-        }}
-      />
+      {userData.photoURL ? (
+        <Avatar
+          size="medium"
+          rounded
+          source={{
+            uri: userData.photoURL,
+          }}
+        />
+      ) : (
+        <Avatar size="medium" rounded icon={{ name: 'home' }} />
+      )}
 
       <Button
         title="Sign Out"

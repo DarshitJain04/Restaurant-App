@@ -14,7 +14,15 @@ const LoadingScreen = ({ navigation }) => {
         firebase.auth().onAuthStateChanged((user) => {
           if (user) {
             //Logged In
-            navigation.navigate('Home', { user: user })
+            if (user.emailVerified === false) {
+              // User Has not Updated Profile
+              // Navigate to UpdateScreen
+              navigation.navigate('Update', { user: user })
+            } else {
+              // User Has Updated Profile
+              // Navigate to HomeScreen
+              navigation.navigate('Home', { user: user })
+            }
           } else {
             // Logged Out
             navigation.navigate('AuthFlow')

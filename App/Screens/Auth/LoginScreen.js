@@ -20,10 +20,8 @@ import { useFormik } from 'formik'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { theme } from '../../Theme/theme'
 import * as Yup from 'yup'
-import {
-  signInWithEmailPassword,
-  signInWithFaceBook,
-} from '../../Utils/EmailAuth'
+import { signInWithEmailPassword } from '../../Utils/EmailAuth'
+import { signInWithFaceBook } from '../../Utils/FaceBookAuth'
 import * as Facebook from 'expo-facebook'
 import { SocialIcon } from 'react-native-elements'
 
@@ -55,7 +53,7 @@ const LoginScreen = ({ navigation }) => {
       password: '',
     },
     validationSchema: Yup.object({
-      email: Yup.string().email('Invalid email address').required('Required'),
+      email: Yup.string().email('Invalid email address').required(),
       password: Yup.string().min(6).required(),
     }),
     onSubmit: (values) => {
