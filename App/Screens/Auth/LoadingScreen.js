@@ -8,9 +8,9 @@ const LoadingScreen = ({ navigation }) => {
   const isFirstTimeUser = async () => {
     try {
       const value = await AsyncStorage.getItem('FirstTimeUser')
-      if (value == null) {
+      if (value === null) {
         navigation.navigate('Intro')
-      } else {
+      } else if (value === 'NO') {
         firebase.auth().onAuthStateChanged((user) => {
           if (user) {
             //Logged In

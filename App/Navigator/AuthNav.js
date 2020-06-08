@@ -14,7 +14,7 @@ const AuthNav = createStackNavigator(
     Signup: SignupScreen,
   },
   {
-    initialRouteName: 'Intro',
+    initialRouteName: 'Login',
     headerMode: 'none',
   }
 )

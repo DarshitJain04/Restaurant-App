@@ -40,16 +40,12 @@ const slides = [
 const IntroScreen = ({ navigation }) => {
   const setFirstTimeUser = async () => {
     try {
-      await AsyncStorage.setItem('FirstTimeUser', 'No')
-      // navigation.navigate('Auth')
+      await AsyncStorage.setItem('FirstTimeUser', 'NO')
+      navigation.navigate('Loading')
     } catch (e) {
       console.log(e)
     }
   }
-
-  useEffect(() => {
-    setFirstTimeUser()
-  }, [])
 
   _renderItem = ({ item }) => {
     return (
@@ -105,7 +101,8 @@ const IntroScreen = ({ navigation }) => {
       showSkipButton={true}
       data={slides}
       renderItem={_renderItem}
-      onDone={() => navigation.navigate('Signup')}
+      onDone={setFirstTimeUser}
+      onSkip={setFirstTimeUser}
     />
   )
 }
