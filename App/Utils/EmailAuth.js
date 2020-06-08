@@ -18,3 +18,16 @@ export const signInWithEmailPassword = async (email, password) => {
     return error
   }
 }
+
+export const signInWithFaceBook = async (token) => {
+  try {
+    const credential = await firebase.auth.FacebookAuthProvider.credential(
+      token
+    )
+    // Sign in with this credential
+    await firebase.auth().signInWithCredential(credential)
+    return 'OK'
+  } catch (error) {
+    return error
+  }
+}
