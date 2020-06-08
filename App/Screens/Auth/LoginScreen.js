@@ -108,6 +108,7 @@ const LoginScreen = ({ navigation }) => {
               onChangeText={formik.handleChange('email')}
               placeholder="email@address.com"
               leftIcon={<Icon name="email" size={20} color="black" />}
+              autoCapitalize="none"
             />
             <Input
               onBlur={formik.handleBlur('password')}
@@ -117,6 +118,7 @@ const LoginScreen = ({ navigation }) => {
               secureTextEntry={true}
               placeholder="Password"
               leftIcon={<Icon name="lock" size={20} color="black" />}
+              autoCapitalize="none"
             />
           </View>
           <View>
