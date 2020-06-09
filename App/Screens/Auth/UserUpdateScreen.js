@@ -10,15 +10,15 @@ import { newUserUtils } from '../../Utils/NewUserUtils'
 
 // create a component
 const UpdateScreen = ({ navigation }) => {
+  console.ignoredYellowBox = ['Setting a timer']
   const userData = navigation.getParam('user')
-  console.log(userData)
   const formik = useFormik({
     initialValues: {
       displayName: userData.displayName,
       email: userData.email,
       phoneNumber: userData.phoneNumber,
     },
-    onSubmit: (values) => {
+    onSubmit: (values, actions) => {
       // TODO-
       // 1.Update User Profile
       // 2.Send Verfication Email
@@ -26,13 +26,25 @@ const UpdateScreen = ({ navigation }) => {
       newUserUtils(values).then((res) => {
         if (res === 'OK') {
           // TODO , modify this alert box to properly display the success message
-          Alert.alert('Verification Link Sent to Your mail.')
+          Alert.alert('Success !', 'Verification link send to you mail !', [
+            {
+              text: 'OK',
+              onPress: () => {
+                // logout the user and navigate to loadingScreen
+                firebase
+                  .auth()
+                  .signOut()
+                  .then(() => {
+                    navigation.navigate('Loading')
+                  })
+              },
+            },
+          ])
         } else {
           // error
           Alert.alert(res)
         }
       })
-      //   Alert.alert(JSON.stringify(values))
     },
   })
   return (
@@ -67,38 +79,6 @@ const UpdateScreen = ({ navigation }) => {
         containerStyle={{ margin: 20 }}
         title="Submit"
         onPress={formik.handleSubmit}
-      />
-      <Button
-        containerStyle={{ margin: 20 }}
-        title="Send Verification Email"
-        onPress={() => {
-          const user = firebase.auth().currentUser
-          user.sendEmailVerification().then(
-            (res) => {
-              Alert.alert('Email Sent')
-            },
-            (res) => {
-              Alert.alert(res.message)
-            }
-          )
-        }}
-      />
-      <Button
-        containerStyle={{ margin: 20 }}
-        title="Sign Out"
-        onPress={() => {
-          firebase
-            .auth()
-            .signOut()
-            .then(
-              () => {
-                navigation.navigate('Loading')
-              },
-              (res) => {
-                console.error(res)
-              }
-            )
-        }}
       />
     </View>
   )

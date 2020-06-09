@@ -102,6 +102,7 @@ const LoginScreen = ({ navigation }) => {
           <Text style={styles.subheading}>We love to see you again.</Text>
           <View style={{ padding: 20 }}>
             <Input
+              keyboardType="email-address"
               onBlur={formik.handleBlur('email')}
               errorMessage={formik.touched.email && formik.errors.email}
               value={formik.values.email}
@@ -111,6 +112,8 @@ const LoginScreen = ({ navigation }) => {
               autoCapitalize="none"
             />
             <Input
+              autoCorrect={false}
+              autoCapitalize={false}
               onBlur={formik.handleBlur('password')}
               errorMessage={formik.touched.password && formik.errors.password}
               value={formik.values.password}
