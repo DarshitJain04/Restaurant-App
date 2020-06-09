@@ -1,12 +1,11 @@
-name: Expo GitHub Action
-uses: expo/expo-github-action@5.1.0
+name: Expo Publish and Build
 on:
   push:
     branches:
       - Release
 jobs:
   build:
-    name: Publish and Build
+    name: Publish and build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
