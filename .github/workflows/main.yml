@@ -1,0 +1,24 @@
+name: Expo GitHub Action
+uses: expo/expo-github-action@5.1.0
+on:
+  push:
+    branches:
+      - Release
+jobs:
+  build:
+    name: Publish and Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - uses: expo/expo-github-action@v5
+        with:
+          expo-version: 3.x
+          expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
+          expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
+          expo-cache: true
+      - run: yarn install
+      - run: expo publish
+      - run: expo build:android -t apk
