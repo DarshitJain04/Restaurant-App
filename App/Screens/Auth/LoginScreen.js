@@ -24,7 +24,7 @@ import { signInWithEmailPassword } from '../../Utils/EmailAuth'
 import { signInWithFaceBook } from '../../Utils/FaceBookAuth'
 import * as Facebook from 'expo-facebook'
 import { SocialIcon } from 'react-native-elements'
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
@@ -73,7 +73,7 @@ const LoginScreen = ({ navigation }) => {
           navigation.navigate('Loading')
         } else {
           // Error
-          Alert.alert(res.message)
+          Alert.alert('Error', res.message)
         }
       })
     },

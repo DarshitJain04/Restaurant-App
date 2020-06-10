@@ -64,7 +64,7 @@ const UpdateScreen = ({ navigation }) => {
           ])
         } else {
           // error
-          Alert.alert(res)
+          Alert.alert('Error', res)
         }
       })
     },

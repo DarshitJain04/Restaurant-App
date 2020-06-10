@@ -73,7 +73,7 @@ const SignupScreen = ({ navigation }) => {
           navigation.navigate('Loading')
         } else {
           //Error
-          Alert.alert(t.message)
+          Alert.alert('Error', t.message)
         }
       })
     },
@@ -91,7 +91,7 @@ const SignupScreen = ({ navigation }) => {
             navigation.navigate('Loading')
           } else {
             //Error
-            Alert.alert(t.message)
+            Alert.alert('Error', t.message)
           }
         })
       }
@@ -119,6 +119,8 @@ const SignupScreen = ({ navigation }) => {
                 formik.handleBlur('email')
               }}
               inputContainerStyle={onEmail ? styles.inputFocused : {}}
+              keyboardType="email-address"
+              onBlur={formik.handleBlur('email')}
               errorMessage={formik.touched.email && formik.errors.email}
               value={formik.values.email}
               onChangeText={formik.handleChange('email')}
