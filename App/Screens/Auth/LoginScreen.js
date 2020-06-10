@@ -67,9 +67,9 @@ const LoginScreen = ({ navigation }) => {
     onSubmit: (values) => {
       setLoad(true)
       signInWithEmailPassword(values.email, values.password).then((res) => {
+        setLoad(false)
         if (res === 'OK') {
           // Logged In
-          setLoad(false)
           navigation.navigate('Loading')
         } else {
           // Error

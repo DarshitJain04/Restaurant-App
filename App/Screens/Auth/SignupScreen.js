@@ -67,9 +67,9 @@ const SignupScreen = ({ navigation }) => {
       setLoad(true)
       const res = signUpWithEmailPassword(values.email, values.password)
       res.then((t) => {
+        setLoad(false)
         if (t === 'OK') {
           //Signed IN
-          setLoad(false)
           navigation.navigate('Loading')
         } else {
           //Error
