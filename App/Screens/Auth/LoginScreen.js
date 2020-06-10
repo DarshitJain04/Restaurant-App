@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   ImageBackground,
   Dimensions,
@@ -24,6 +24,7 @@ import { signInWithEmailPassword } from '../../Utils/EmailAuth'
 import { signInWithFaceBook } from '../../Utils/FaceBookAuth'
 import * as Facebook from 'expo-facebook'
 import { SocialIcon } from 'react-native-elements'
+import { Ionicons } from '@expo/vector-icons'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
@@ -44,9 +45,16 @@ const styles = StyleSheet.create({
     fontSize: hp('1.6%'),
     color: theme.colors.green,
   },
+  inputFocused: {
+    borderBottomColor: theme.colors.purple,
+    borderBottomWidth: 2,
+  },
 })
 
 const LoginScreen = ({ navigation }) => {
+  const [onEmail, setOnEmail] = useState(false)
+  const [onPassword, setOnPassword] = useState(false)
+  const [load, setLoad] = useState(false)
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -57,7 +65,9 @@ const LoginScreen = ({ navigation }) => {
       password: Yup.string().min(6).required(),
     }),
     onSubmit: (values) => {
+      setLoad(true)
       signInWithEmailPassword(values.email, values.password).then((res) => {
+        setLoad(false)
         if (res === 'OK') {
           // Logged In
           navigation.navigate('Loading')
@@ -98,35 +108,46 @@ const LoginScreen = ({ navigation }) => {
       >
         <AuthScreenBox title="Sign In">
           <Image source={require('../../Assets/Images/Plate.png')} />
-          <Text style={styles.heading}>Welcome</Text>
+          <Text style={styles.heading}>Welcome Back</Text>
           <Text style={styles.subheading}>We love to see you again.</Text>
           <View style={{ padding: 20 }}>
             <Input
               keyboardType="email-address"
-              onBlur={formik.handleBlur('email')}
+              onFocus={() => setOnEmail(true)}
+              onBlur={() => {
+                setOnEmail(false)
+                formik.handleBlur('email')
+              }}
+              inputContainerStyle={onEmail ? styles.inputFocused : {}}
               errorMessage={formik.touched.email && formik.errors.email}
               value={formik.values.email}
               onChangeText={formik.handleChange('email')}
               placeholder="email@address.com"
-              leftIcon={<Icon name="email" size={20} color="black" />}
+              leftIcon={<Icon name="email" size={hp('3%')} color="black" />}
               autoCapitalize="none"
             />
             <Input
               autoCorrect={false}
               autoCapitalize={false}
-              onBlur={formik.handleBlur('password')}
+              onFocus={() => setOnPassword(true)}
+              onBlur={() => {
+                setOnPassword(false)
+                formik.handleBlur('password')
+              }}
+              inputContainerStyle={onPassword ? styles.inputFocused : {}}
               errorMessage={formik.touched.password && formik.errors.password}
               value={formik.values.password}
               onChangeText={formik.handleChange('password')}
               secureTextEntry={true}
               placeholder="Password"
-              leftIcon={<Icon name="lock" size={20} color="black" />}
+              leftIcon={<Icon name="lock" size={hp('3%')} color="black" />}
               autoCapitalize="none"
             />
           </View>
           <View>
             <Button
               onPress={formik.handleSubmit}
+              loading={load}
               buttonStyle={{
                 height: hp('6%'),
                 width: wp('20%'),
@@ -136,7 +157,13 @@ const LoginScreen = ({ navigation }) => {
                 alignSelf: 'center',
                 marginTop: -20,
               }}
-              icon={<Icon name="arrow-right" size={15} color="white" />}
+              icon={
+                <Ionicons
+                  name="ios-arrow-round-forward"
+                  size={hp('5%')}
+                  color="white"
+                />
+              }
             />
           </View>
         </AuthScreenBox>

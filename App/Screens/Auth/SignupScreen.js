@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   ImageBackground,
   Dimensions,
@@ -23,6 +23,7 @@ import * as Yup from 'yup'
 import { signUpWithEmailPassword } from '../../Utils/EmailAuth'
 import { signInWithFaceBook } from '../../Utils/FaceBookAuth'
 import { SocialIcon } from 'react-native-elements'
+import { Ionicons } from '@expo/vector-icons'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
@@ -43,9 +44,16 @@ const styles = StyleSheet.create({
     fontSize: hp('1.6%'),
     color: theme.colors.purple,
   },
+  inputFocused: {
+    borderBottomColor: theme.colors.purple,
+    borderBottomWidth: 2,
+  },
 })
 
 const SignupScreen = ({ navigation }) => {
+  const [onEmail, setOnEmail] = useState(false)
+  const [onPassword, setOnPassword] = useState(false)
+  const [load, setLoad] = useState(false)
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -56,8 +64,10 @@ const SignupScreen = ({ navigation }) => {
       password: Yup.string().min(6).required(),
     }),
     onSubmit: (values) => {
+      setLoad(true)
       const res = signUpWithEmailPassword(values.email, values.password)
       res.then((t) => {
+        setLoad(false)
         if (t === 'OK') {
           //Signed IN
           navigation.navigate('Loading')
@@ -103,6 +113,12 @@ const SignupScreen = ({ navigation }) => {
           <Text style={styles.subheading}>We would love you to join us</Text>
           <View style={{ padding: 20 }}>
             <Input
+              onFocus={() => setOnEmail(true)}
+              onBlur={() => {
+                setOnEmail(false)
+                formik.handleBlur('email')
+              }}
+              inputContainerStyle={onEmail ? styles.inputFocused : {}}
               keyboardType="email-address"
               onBlur={formik.handleBlur('email')}
               errorMessage={formik.touched.email && formik.errors.email}
@@ -113,7 +129,12 @@ const SignupScreen = ({ navigation }) => {
               autoCapitalize="none"
             />
             <Input
-              onBlur={formik.handleBlur('password')}
+              onFocus={() => setOnPassword(true)}
+              onBlur={() => {
+                setOnPassword(false)
+                formik.handleBlur('password')
+              }}
+              inputContainerStyle={onPassword ? styles.inputFocused : {}}
               errorMessage={formik.touched.password && formik.errors.password}
               value={formik.values.password}
               onChangeText={formik.handleChange('password')}
@@ -125,6 +146,7 @@ const SignupScreen = ({ navigation }) => {
           </View>
           <View>
             <Button
+              loading={load}
               onPress={formik.handleSubmit}
               buttonStyle={{
                 height: hp('6%'),
@@ -135,7 +157,13 @@ const SignupScreen = ({ navigation }) => {
                 alignSelf: 'center',
                 marginTop: -20,
               }}
-              icon={<Icon name="arrow-right" size={15} color="white" />}
+              icon={
+                <Ionicons
+                  name="ios-arrow-round-forward"
+                  size={hp('5%')}
+                  color="white"
+                />
+              }
             />
           </View>
         </AuthScreenBox>
