@@ -21,6 +21,8 @@ const AuthScreenBox = ({ children, title }) => {
     >
       <Text style={styles.heading}>{title}</Text>
       <View style={styles.FirstBoxStyles}>{children}</View>
+      <View style={styles.SecondBoxStyles} />
+      <View style={styles.ThirdBoxStyles} />
     </KeyboardAvoidingView>
   )
 }
@@ -46,7 +48,10 @@ const styles = StyleSheet.create({
   },
   FirstBoxStyles: {
     ...ReusableStyles,
+    position: 'absolute',
     opacity: 1,
+    zIndex: 3,
+    transform: [{ scale: 1.0 }],
   },
   SecondBoxStyles: {
     ...ReusableStyles,
