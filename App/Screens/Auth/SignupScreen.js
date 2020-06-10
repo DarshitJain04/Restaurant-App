@@ -63,7 +63,7 @@ const SignupScreen = ({ navigation }) => {
           navigation.navigate('Loading')
         } else {
           //Error
-          Alert.alert(t.message)
+          Alert.alert('Error', t.message)
         }
       })
     },
@@ -81,7 +81,7 @@ const SignupScreen = ({ navigation }) => {
             navigation.navigate('Loading')
           } else {
             //Error
-            Alert.alert(t.message)
+            Alert.alert('Error', t.message)
           }
         })
       }
@@ -103,6 +103,7 @@ const SignupScreen = ({ navigation }) => {
           <Text style={styles.subheading}>We would love you to join us</Text>
           <View style={{ padding: 20 }}>
             <Input
+              keyboardType="email-address"
               onBlur={formik.handleBlur('email')}
               errorMessage={formik.touched.email && formik.errors.email}
               value={formik.values.email}

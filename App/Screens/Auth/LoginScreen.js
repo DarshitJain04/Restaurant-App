@@ -63,7 +63,7 @@ const LoginScreen = ({ navigation }) => {
           navigation.navigate('Loading')
         } else {
           // Error
-          Alert.alert(res.message)
+          Alert.alert('Error', res.message)
         }
       })
     },
